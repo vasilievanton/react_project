@@ -1,0 +1,14 @@
+table {
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+thead {
+    font-weight: 700;
+    font-size: 150%;
+}
+
+td {
+    padding: 5px 20px;
+    border: 1px solid white;
+}
