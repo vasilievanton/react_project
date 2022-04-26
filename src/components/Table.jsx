@@ -37,6 +37,7 @@ const Table = (props) => {
                 const editedData = users;
                 editedData.splice(editTableUserData.userIndex, 1, userData);
                 setUsers(editedData);
+                setData(editedData);
                 setEditTableUserData({
                     isEdit: false,
                     indexUser: null,
@@ -50,9 +51,7 @@ const Table = (props) => {
     };
 
     const handleClickClean = () => setUserData(initialValue);
-    console.log(users);
     const handleClickEdit = (data, index) => {
-        console.log(data);
         setUserData(data);
         setEditTableUserData({ isEdit: true, userIndex: index });
     };
@@ -69,9 +68,6 @@ const Table = (props) => {
                         <td>Date</td>
                         <td>Car</td>
                         <td>Actions</td>
-                        {/* {keysHeader.map((key) => (
-                        <td>{key}</td>
-                    ))} */}
                     </tr>
                 </thead>
                 <tbody>
@@ -106,7 +102,6 @@ const Table = (props) => {
                         {editTableUserData.isEdit ? 'Edit' : 'Add'}
                     </button>
                 </div>
-                {/* <input onChange={(event) => setPerson(event.target.value)} type="text" value={person} /> */}
             </form>
         </div>
     );
