@@ -2,3 +2,30 @@
     text-align: center;
     align-items: center;
 }
+
+table {
+    margin: 0 auto 50px;
+    border-collapse: collapse;
+}
+
+thead {
+    font-weight: 700;
+}
+
+td {
+    padding: 5px 20px;
+    border: 1px solid #fff;
+}
+
+button {
+    background: #fff;
+    border-radius: 5px;
+    border: none;
+    margin: 20px 10px;
+    padding: 5px 15px;
+    text-transform: uppercase;
+}
+
+table button {
+    margin: 0 10px;
+}
