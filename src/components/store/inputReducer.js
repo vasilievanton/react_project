@@ -1,3 +1,5 @@
+import { EDIT_INPUT_VALUE, CLEAR_INPUT_VALUES, EDITABLE_USER } from './types';
+
 const defaultState = {
     id: '',
     name: '',
@@ -5,59 +7,40 @@ const defaultState = {
     date: '',
     car: '',
 };
-const ADD_INPUT_NAME = 'ADD_INPUT_NAME';
-const ADD_INPUT_AGE = 'ADD_INPUT_AGE';
-const ADD_INPUT_DATE = 'ADD_INPUT_DATE';
-const ADD_INPUT_CAR = 'ADD_INPUT_CAR';
-const EDIT_INPUT_NULL = 'EDIT_INPUT_NULL';
-const EDIT_INPUT_EDIT = 'EDIT_INPUT_EDIT';
-const EDIT_INPUT_NAME = 'EDIT_INPUT_NAME';
-const EDIT_INPUT_AGE = 'EDIT_INPUT_AGE';
-const EDIT_INPUT_DATE = 'EDIT_INPUT_DATE';
-const EDIT_INPUT_CAR = 'EDIT_INPUT_CAR';
 
-// action = {type: '', payload: '?'}
 export const inputReducer = (state = defaultState, action) => {
+    console.log(action);
     switch (action.type) {
-        case ADD_INPUT_NAME: {
-            return { ...state, name: action.payload, id: Date.now() };
+        case EDIT_INPUT_VALUE: {
+            if (action.valueType === 'name') {
+                return { ...state, name: action.value, id: Date.now() };
+            }
+            if (action.valueType === 'age') {
+                return { ...state, age: action.value, id: Date.now() };
+            }
+            if (action.valueType === 'date') {
+                return { ...state, date: action.value, id: Date.now() };
+            }
+            if (action.valueType === 'car') {
+                return { ...state, car: action.value, id: Date.now() };
+            } else {
+                return state;
+            }
         }
-        case ADD_INPUT_AGE: {
-            return { ...state, age: action.payload, id: Date.now() };
+        case CLEAR_INPUT_VALUES: {
+            return { ...state, id: '', name: '', age: '', date: '', car: '' };
         }
-        case ADD_INPUT_DATE: {
-            return { ...state, date: action.payload, id: Date.now() };
-        }
-        case ADD_INPUT_CAR: {
-            return { ...state, car: action.payload, id: Date.now() };
-        }
-        case EDIT_INPUT_NULL: {
-            return { id: '', name: '', age: '', date: '', car: '' };
-        }
-        case EDIT_INPUT_EDIT: {
+        case EDITABLE_USER: {
             return {
-                id: action.payload.person.id,
-                name: action.payload.person.name,
-                age: action.payload.person.age,
-                date: action.payload.person.date,
-                car: action.payload.person.car,
+                ...state,
+                id: action.user.id,
+                name: action.user.name,
+                age: action.user.age,
+                date: action.user.date,
+                car: action.user.car,
             };
-        }
-        case EDIT_INPUT_NAME: {
-            return { ...state, name: action.payload };
-        }
-        case EDIT_INPUT_AGE: {
-            return { ...state, ade: action.payload };
-        }
-        case EDIT_INPUT_DATE: {
-            return { ...state, date: action.payload };
-        }
-        case EDIT_INPUT_CAR: {
-            return { ...state, car: action.payload };
         }
         default:
             return state;
     }
 };
-
-export const handleInputChangeAction = (type, payload) => ({ type, payload });

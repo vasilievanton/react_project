@@ -1,0 +1,134 @@
+From 9176f937a833001caf46516aa6594d95153e2e97 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E2=80=9CAndrey?= <andrey.saleba@gmail.com>
+Date: Thu, 5 May 2022 15:57:49 +0400
+Subject: [PATCH] + todos
+
+---
+ src/App.js                           | 33 ++++++++++++++++++++--------
+ src/components/store/inputReducer.js |  1 +
+ src/components/store/usersReducer.js |  8 ++++++-
+ 3 files changed, 32 insertions(+), 10 deletions(-)
+
+diff --git a/src/App.js b/src/App.js
+index 48dba99..d8063ab 100644
+--- a/src/App.js
++++ b/src/App.js
+@@ -7,17 +7,20 @@ import { isEditReducerAction } from './components/store/isEditReducer';
+ import { usersReducerAction } from './components/store/usersReducer';
+ 
+ const appHeader = 'Привет react';
+-
++// TODO: основная идея редакса в разделениии логики и отображения (view/data layer), и тут это не совсем выполнено, т е
++// лучше было бы сделать так что этот компонент имел бы оч простой вид, выбирал селекторами данные из редакс стора, как и есть
++// а вся логика лежала бы где-то в другом месте, напр, можно создать отдельный файл actions/user и туда все повыносить и из компонента к нему обращаться просто
++// почитай про примеры aciton creator'ов и как они выглядят обычно
+ function App() {
+     const dispatch = useDispatch();
+-    const nowInInput = useSelector((state) => state.input);
+-    const nowInTable = useSelector((state) => state.users);
+-    const isEditTable = useSelector((state) => state.isEdit);
++    const nowInInput = useSelector((state) => state.input); // TODO: названия треш, непонятно что это, обьекты-переменнные обычно существиельным называют. boolean - что-то вроде isVisible, isDoable и т п, тут я бы придумал что-то типа userInputValue если я правильно назначение понял, а ниже просто users можно, но можешь и свое что-то более очевидное придумать
++    const nowInTable = useSelector((state) => state.users); // +1
++    const isEditTable = useSelector((state) => state.isEdit); // TODO: нет смысла хранить все в редаксе, там хранят обычно только бизнес-данные, а таким переключателям обычно место во внутреннем стейте компонента
+ 
+     const handleClickAdd = (e) => {
+         e.preventDefault();
+         if (isEditTable.isEdit) {
+-            dispatch(usersReducerAction('EDIT_USER', [nowInInput, isEditTable.userIndex]));
++            dispatch(usersReducerAction('EDIT_USER', [nowInInput, isEditTable.userIndex])); // TODO: литералы в константы
+         } else {
+             dispatch(usersReducerAction('ADD_USER', nowInInput));
+         }
+@@ -25,15 +28,15 @@ function App() {
+         handleClickClean();
+     };
+ 
+-    const handleClickClean = (e) => {
+-        return dispatch(handleInputChangeAction('EDIT_INPUT_NULL'));
++    const handleClickClean = (e) => { // TODO: название ф странное
++        return dispatch(handleInputChangeAction('EDIT_INPUT_NULL')); // TODO: название странное edit input null, назначение понятно, но само название н очень, можно же проще делать типа clear user input values или еще как-то
+     };
+ 
+     const handleClickRemove = ({ index }) => {
+         dispatch(usersReducerAction('DELETE_USER', index));
+-    };
++    };  // TODO: пробела ниже нет, а выше есть, лучше чтобы везде было однообразно
+     const handleClickEdit = (person) => {
+-        dispatch(handleInputChangeAction('EDIT_INPUT_EDIT', person));
++        dispatch(handleInputChangeAction('EDIT_INPUT_EDIT', person)); // TODO: edit input edit тоже не очень понятно почему так сложно названо
+         dispatch(isEditReducerAction('IS_EDIT_USER', person));
+     };
+ 
+@@ -45,6 +48,15 @@ function App() {
+     console.log('state.users (nowInTable)', nowInTable);
+     console.log('state.isEdit. isEdit?', isEditTable.isEdit);
+     console.log('state.isEdit userIndex', isEditTable.userIndex);
++    // TODO: идея "правильного" программирования на реакте в том, чтобы иметь как можно меньшие в размере компоненты
++    // можно воспринимать буквально и иметь компоненты по 10-30 строк
++    // здесь я бы выделил компонент таблицы, в него данные бы передавал, дальше отдельный компонент под каждый <tr>
++    // + отдельный компонент под контролы
++    // тогда получится как раз изолировать данные и станет понятнее, зачем редакс нужен все-таки
++
++    // т е выйдет что-то вроде компонента кнопок, и он будет диспатчить свои экшены
++    // отдельный компонент таблицы и он не будет ничего делать кроме как выводить таблицу циклом
++    // отдельный компонент под <tr> для юзера, и он будет только отображать данные, и таким образом весь код будет "умнее" и проще, чем иметь все в одном месте
+     return (
+         <div className="App">
+             <AppHeader value={appHeader} />
+@@ -87,7 +99,10 @@ function App() {
+                             placeholder="Name"
+                             value={nowInInput.name}
+                             onChange={(e) => {
++                              // TODO: это прям запрещено, не надо писать ифы здесь внутри, и вообще какой-либо код, лучше написать выше в компоненте метод и его отсюда вызвать
+                                 if (isEditTable.isEdit) {
++                                  // TODO: пока пойдет, в след проекте используй formik для этого, не помню есть он там в задачах или нет
++                                  // можно было бы сделать EDIT_INPUT_VALUE, и в параметры тип передавать третьим параметром, так не лучше было бы чем куча разных экшенов для одного и того же?
+                                     return handleInputChange('EDIT_INPUT_NAME', e.target.value);
+                                 }
+                                 return handleInputChange('ADD_INPUT_NAME', e.target.value);
+diff --git a/src/components/store/inputReducer.js b/src/components/store/inputReducer.js
+index e8b470a..3f8991c 100644
+--- a/src/components/store/inputReducer.js
++++ b/src/components/store/inputReducer.js
+@@ -20,6 +20,7 @@ const EDIT_INPUT_CAR = 'EDIT_INPUT_CAR';
+ export const inputReducer = (state = defaultState, action) => {
+     switch (action.type) {
+         case ADD_INPUT_NAME: {
++            // TODO: а зачем id: Date.now()? нельзя как-то проще или без этого?
+             return { ...state, name: action.payload, id: Date.now() };
+         }
+         case ADD_INPUT_AGE: {
+diff --git a/src/components/store/usersReducer.js b/src/components/store/usersReducer.js
+index 0b88d3e..0528817 100644
+--- a/src/components/store/usersReducer.js
++++ b/src/components/store/usersReducer.js
+@@ -5,7 +5,7 @@ const data = [
+     { id: 4734878785546, name: 'Vitya', age: '13', date: '11.01', car: 'yes' },
+ ];
+ const defaultState = [...data];
+-
++// TODO: константы уже есть, их же можно и нужно отсюда экспортировать и использовать везде
+ const ADD_USER = 'ADD_USER';
+ const DELETE_USER = 'DELETE_USER';
+ const EDIT_USER = 'EDIT_USER';
+@@ -17,11 +17,17 @@ export const usersReducer = (state = defaultState, action) => {
+             return [...state, action.payload];
+         }
+         case DELETE_USER: {
++            // TODO: можно же сразу return написать без доппеременных
++            // action.payload - не говорит о том что там лежит какой-то индекс, лучше назвать по-другому, это касается всего кода, везде перепроверь названия переменных и подумай, насколько они понятны человеку, кот первывй раз код видит
+             const newState = state.filter((user, userIndex) => userIndex !== action.payload);
+             return newState;
+         }
+         case EDIT_USER: {
+             const newState = [...state];
++            // TODO: то что тут сделано, это конечно можно, но не нужно,
++            // splice и redux не друзья, почитай про иммутабельность
++            // и в целом сложно, можно было бы как-то вроде
++            // https://stackoverflow.com/questions/35628774/how-to-update-single-value-inside-specific-array-item-in-redux
+             newState.splice(action.payload[1], 1, action.payload[0]);
+             return newState;
+         }
+-- 
+2.32.0 (Apple Git-132)
+

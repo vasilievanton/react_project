@@ -1,33 +1,45 @@
-const data = [
-    { id: 2123533425323, name: 'Vanya', age: '28', date: '13.04', car: 'yes' },
-    { id: 8767564335646, name: 'Pasha', age: '32', date: '07.09', car: 'no' },
-    { id: 5465786744645, name: 'Leha', age: '41', date: '27.08', car: 'no' },
-    { id: 4734878785546, name: 'Vitya', age: '13', date: '11.01', car: 'yes' },
-];
-const defaultState = [...data];
+import { ADD_USER, REMOVE_USER, EDIT_USER } from './types';
+import { usersListData } from '../usersListData';
 
-const ADD_USER = 'ADD_USER';
-const DELETE_USER = 'DELETE_USER';
-const EDIT_USER = 'EDIT_USER';
+const defaultState = { users: [...usersListData] };
 
-// action = {type: '', payload: '?'}
 export const usersReducer = (state = defaultState, action) => {
     switch (action.type) {
         case ADD_USER: {
-            return [...state, action.payload];
+            return {
+                ...state,
+                users: [...state.users, action.user],
+            };
         }
-        case DELETE_USER: {
-            const newState = state.filter((user, userIndex) => userIndex !== action.payload);
-            return newState;
+        case REMOVE_USER: {
+            return {
+                ...state,
+                users: state.users.filter((user, userIndex) => userIndex !== action.userIndex),
+            };
         }
         case EDIT_USER: {
-            const newState = [...state];
-            newState.splice(action.payload[1], 1, action.payload[0]);
-            return newState;
+            console.log(action);
+            return {
+                ...state,
+                users: state.users.map((user, i) =>
+                    i === action.userIndex
+                        ? {
+                              ...user,
+                              name: action.user.name,
+                              age: action.user.age,
+                              date: action.user.date,
+                              car: action.user.car,
+                          }
+                        : user
+                ),
+            };
         }
         default:
             return state;
     }
 };
 
-export const usersReducerAction = (type, payload) => ({ type, payload });
+// TODO: можно же сразу return написать без доппеременных
+// action.payload - не говорит о том что там лежит какой-то индекс, лучше назвать по-другому, это касается всего кода, везде перепроверь названия переменных и подумай, насколько они понятны человеку, кот первывй раз код видит
+
+// https://stackoverflow.com/questions/35628774/how-to-update-single-value-inside-specific-array-item-in-redux
