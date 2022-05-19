@@ -1,5 +1,9 @@
-import { EDIT_INPUT_VALUE, ADD_USER, CLEAR_INPUT_VALUES, EDITABLE_USER, EDIT_USER, EDIT_USER_OFF, EDIT_USER_ON, REMOVE_USER } from './types';
+import { EDIT_INPUT_VALUE, ADD_USER, CLEAR_INPUT_VALUES, EDITABLE_USER, EDIT_USER, EDIT_USER_OFF, EDIT_USER_ON, REMOVE_USER, ADD_MANY_USER } from './types';
 
+export const addManyUserAction = (users) => ({
+    type: ADD_MANY_USER,
+    users,
+});
 export const addUserAction = (user) => ({
     type: ADD_USER,
     user,
@@ -22,10 +26,10 @@ export const inputChangeAction = (value, valueType) => ({
 export const inputClearAction = () => ({
     type: CLEAR_INPUT_VALUES,
 });
-export const editableUserAction = (user, userIndex) => ({
+export const editableUserAction = (id, user) => ({
     type: EDITABLE_USER,
-    user,
-    userIndex,
+    id: id,
+    data: user,
 });
 
 export const editReducerOnAction = (userIndex) => ({

@@ -1,10 +1,17 @@
-import { ADD_USER, REMOVE_USER, EDIT_USER } from './types';
-import { usersListData } from '../usersListData';
+import { ADD_USER, REMOVE_USER, EDIT_USER, ADD_MANY_USER } from './types';
 
-const defaultState = { users: [...usersListData] };
+const defaultState = { users: [] };
 
 export const usersReducer = (state = defaultState, action) => {
     switch (action.type) {
+        case ADD_MANY_USER: {
+            console.log(action);
+            return {
+                ...state,
+                users: [...action.users.map((user) => user)],
+                // users: [...state.users, ...action.users.map((user) => user.data)],
+            };
+        }
         case ADD_USER: {
             return {
                 ...state,
@@ -18,7 +25,6 @@ export const usersReducer = (state = defaultState, action) => {
             };
         }
         case EDIT_USER: {
-            console.log(action);
             return {
                 ...state,
                 users: state.users.map((user, i) =>
@@ -38,8 +44,3 @@ export const usersReducer = (state = defaultState, action) => {
             return state;
     }
 };
-
-// TODO: можно же сразу return написать без доппеременных
-// action.payload - не говорит о том что там лежит какой-то индекс, лучше назвать по-другому, это касается всего кода, везде перепроверь названия переменных и подумай, насколько они понятны человеку, кот первывй раз код видит
-
-// https://stackoverflow.com/questions/35628774/how-to-update-single-value-inside-specific-array-item-in-redux

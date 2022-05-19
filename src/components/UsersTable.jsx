@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import UserRow from './UserRow';
+import uniqid from 'uniqid';
 
 const UsersTable = () => {
     const users = useSelector((state) => state.users.users);
@@ -12,15 +13,15 @@ const UsersTable = () => {
                     <td>№</td>
                     <td>ID</td>
                     <td>Name</td>
-                    <td>Age</td>
-                    <td>Date</td>
-                    <td>Car</td>
+                    <td>Last Name</td>
+                    <td>Phone</td>
+                    <td>e-mail</td>
                     <td>Actions</td>
                 </tr>
             </thead>
             <tbody>
                 {users.map((person, index) => (
-                    <UserRow person={person} index={index} key={person.id} />
+                    <UserRow person={person} index={index} key={uniqid()} />
                 ))}
             </tbody>
         </table>

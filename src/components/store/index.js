@@ -1,8 +1,8 @@
-import { legacy_createStore as createStore, combineReducers } from 'redux';
-
+import { legacy_createStore as createStore, combineReducers, applyMiddleware } from 'redux';
 import { inputReducer } from './inputReducer';
 import { usersReducer } from './usersReducer';
 import { isEditReducer } from './isEditReducer';
+import thunk from 'redux-thunk';
 
 const rootReduser = combineReducers({
     input: inputReducer,
@@ -10,4 +10,4 @@ const rootReduser = combineReducers({
     isEdit: isEditReducer,
 });
 
-export const store = createStore(rootReduser);
+export const store = createStore(rootReduser, applyMiddleware(thunk));

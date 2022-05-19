@@ -1,43 +1,42 @@
 import { EDIT_INPUT_VALUE, CLEAR_INPUT_VALUES, EDITABLE_USER } from './types';
 
 const defaultState = {
-    id: '',
     name: '',
-    age: '',
-    date: '',
-    car: '',
+    lastName: '',
+    phone: '',
+    email: '',
 };
 
 export const inputReducer = (state = defaultState, action) => {
-    console.log(action);
     switch (action.type) {
         case EDIT_INPUT_VALUE: {
             if (action.valueType === 'name') {
-                return { ...state, name: action.value, id: Date.now() };
+                return { ...state, name: action.value };
             }
-            if (action.valueType === 'age') {
-                return { ...state, age: action.value, id: Date.now() };
+            if (action.valueType === 'lastName') {
+                return { ...state, lastName: action.value };
             }
-            if (action.valueType === 'date') {
-                return { ...state, date: action.value, id: Date.now() };
+            if (action.valueType === 'phone') {
+                return { ...state, phone: action.value };
             }
-            if (action.valueType === 'car') {
-                return { ...state, car: action.value, id: Date.now() };
+            if (action.valueType === 'email') {
+                return { ...state, email: action.value };
             } else {
                 return state;
             }
         }
         case CLEAR_INPUT_VALUES: {
-            return { ...state, id: '', name: '', age: '', date: '', car: '' };
+            return { ...state, name: '', lastName: '', phone: '', email: '' };
         }
         case EDITABLE_USER: {
+            console.log(action);
             return {
                 ...state,
-                id: action.user.id,
-                name: action.user.name,
-                age: action.user.age,
-                date: action.user.date,
-                car: action.user.car,
+                id: action.id,
+                name: action.data.name,
+                lastName: action.data.lastName,
+                phone: action.data.phone,
+                email: action.data.email,
             };
         }
         default:

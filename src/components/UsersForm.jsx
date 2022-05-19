@@ -1,13 +1,24 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserAction, editReducerOffAction, editUserAction, inputChangeAction, inputClearAction } from '../components/store/actions';
+import { editReducerOffAction, inputChangeAction, inputClearAction } from '../components/store/actions';
+import { fetchUsers, postUser, putUsers } from '../asyncActions/users';
 
 const UsersForm = () => {
     const dispatch = useDispatch();
+
     const isEdit = useSelector((state) => state.isEdit.isEdit);
-    const editableUserIndex = useSelector((state) => state.isEdit.userIndex);
     const userInputValue = useSelector((state) => state.input);
 
+    const editedUserData = {
+        name: userInputValue.name,
+        lastName: userInputValue.lastName,
+        phone: userInputValue.phone,
+        email: userInputValue.email,
+    };
+
+    console.log(userInputValue);
+    console.log(editedUserData);
     const editInput = (e, type) => {
         dispatch(inputChangeAction(e.target.value, type));
     };
@@ -15,9 +26,9 @@ const UsersForm = () => {
     const addUser = (e) => {
         e.preventDefault();
         if (!isEdit) {
-            dispatch(addUserAction(userInputValue));
+            dispatch(putUsers(userInputValue));
         } else {
-            dispatch(editUserAction(userInputValue, editableUserIndex));
+            dispatch(postUser(userInputValue.id, editedUserData));
             dispatch(editReducerOffAction());
         }
         dispatch(inputClearAction());
@@ -27,9 +38,9 @@ const UsersForm = () => {
         <form>
             <div>
                 <input placeholder="Name" value={userInputValue.name} onChange={(e) => editInput(e, 'name')} />
-                <input placeholder="Age" value={userInputValue.age} onChange={(e) => editInput(e, 'age')} />
-                <input placeholder="Date" value={userInputValue.date} onChange={(e) => editInput(e, 'date')} />
-                <input placeholder="Car" value={userInputValue.car} onChange={(e) => editInput(e, 'car')} />
+                <input placeholder="last Name" value={userInputValue.lastName} onChange={(e) => editInput(e, 'lastName')} />
+                <input placeholder="phone" value={userInputValue.phone} onChange={(e) => editInput(e, 'phone')} />
+                <input placeholder="email" value={userInputValue.email} onChange={(e) => editInput(e, 'email')} />
             </div>
             <div className="form__btns">
                 <button type="button" onClick={() => dispatch(inputClearAction())}>
@@ -37,6 +48,11 @@ const UsersForm = () => {
                 </button>
                 <button type="submit" onClick={(e) => addUser(e)}>
                     {isEdit ? 'Edit' : 'Add'}
+                </button>
+            </div>
+            <div>
+                <button type="button" onClick={() => dispatch(fetchUsers())}>
+                    Load users
                 </button>
             </div>
         </form>
