@@ -5,9 +5,9 @@ import { isEditReducer } from './isEditReducer';
 import thunk from 'redux-thunk';
 
 const rootReduser = combineReducers({
-    input: inputReducer,
-    users: usersReducer,
-    isEdit: isEditReducer,
+  input: inputReducer,
+  users: usersReducer,
+  isEdit: isEditReducer,
 });
 
 export const store = createStore(rootReduser, applyMiddleware(thunk));

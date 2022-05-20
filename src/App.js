@@ -7,13 +7,13 @@ import UsersTable from './components/UsersTable';
 const appHeader = 'Привет react';
 
 function App() {
-    return (
-        <div className="App">
-            <AppHeader value={appHeader} />
-            <UsersTable />
-            <UsersForm />
-        </div>
-    );
+  return (
+    <div className="App">
+      <AppHeader value={appHeader} />
+      <UsersTable />
+      <UsersForm />
+    </div>
+  );
 }
 
 export default App;
