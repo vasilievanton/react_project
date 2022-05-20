@@ -24,11 +24,11 @@ const UsersForm = () => {
 
   const addUser = (e) => {
     e.preventDefault();
-    if (!isEdit) {
-      dispatch(putUser(userInputValue));
-    } else {
+    if (isEdit) {
       dispatch(postUser(userInputValue.id, editedUserData, userInputValue.index));
       dispatch(editReducerOffAction());
+    } else {
+      dispatch(putUser(userInputValue));
     }
     dispatch(inputClearAction());
   };
