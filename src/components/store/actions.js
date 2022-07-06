@@ -1,4 +1,4 @@
-import { LOAD_USERS, ADD_USER, REMOVE_USER, EDIT_USER, LOADING_ON, LOADING_OFF } from './types';
+import { LOAD_USERS, ADD_USER, REMOVE_USER, EDIT_USER, LOADING_ON, LOADING_OFF, SET_QUERY, FILTER_USER } from './types';
 
 export const addManyUserAction = (users) => ({
   type: LOAD_USERS,
@@ -18,6 +18,11 @@ export const editUserAction = (id, user, userIndex) => ({
   user,
   userIndex,
 });
+export const filterUserAction = (query) => ({
+  type: FILTER_USER,
+  query
+});
+
 
 export const setIsLoadingOn = () => ({
   type: LOADING_ON,
@@ -25,3 +30,10 @@ export const setIsLoadingOn = () => ({
 export const setIsLoadingOff = () => ({
   type: LOADING_OFF,
 });
+
+export const setQuery = (query) => ({
+  type: SET_QUERY,
+  query
+});
+
+

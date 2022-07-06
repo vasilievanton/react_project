@@ -33,9 +33,10 @@ const UsersTable = ({ editUser }) => {
         </TableHead>
         {!isLoading ? (
           <TableBody>
-            {users.map((person, index) => (
-              <UserRow editUser={editUser} person={person} index={index} key={person._id} />
-            ))}
+            {users
+              .map((person, index) => (
+                <UserRow editUser={editUser} person={person} index={index} key={person._id} />
+              ))}
           </TableBody>
         ) : (
           <></>

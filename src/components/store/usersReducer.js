@@ -1,10 +1,11 @@
-import { LOAD_USERS, ADD_USER, REMOVE_USER, EDIT_USER } from './types';
+import { LOAD_USERS, ADD_USER, REMOVE_USER, EDIT_USER, FILTER_USER } from './types';
 
 const defaultState = { users: [] };
 
 export const usersReducer = (state = defaultState, action) => {
   switch (action.type) {
     case LOAD_USERS: {
+      console.log(action.users);
       return {
         ...state,
         users: [...action.users.map((user) => user)],
@@ -39,6 +40,12 @@ export const usersReducer = (state = defaultState, action) => {
               }
             : user
         ),
+      };
+    }
+    case FILTER_USER: {
+      return {
+        ...state,
+        users: state.users.filter((user) => user.data.name.toLowerCase().includes(action.query.toLowerCase()))
       };
     }
     default:

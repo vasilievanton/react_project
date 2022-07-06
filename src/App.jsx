@@ -1,7 +1,8 @@
 import { Container } from '@mui/material';
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import './App.css';
 import AppHeader from './components/AppHeader';
+import Filter from './components/Filter';
 import UsersForm from './components/UsersForm';
 import UsersTable from './components/UsersTable';
 import { InputContext } from './Context/Context';
@@ -25,6 +26,7 @@ function App() {
     <Container>
       <AppHeader value={appHeader} />
       <InputContext.Provider value={{ user, setUser, isEdit, setIsEdit }}>
+        <Filter/>
         <UsersTable />
         <UsersForm />
       </InputContext.Provider>
