@@ -23,7 +23,6 @@ export const usersReducer = (state = defaultState, action) => {
       };
     }
     case EDIT_USER: {
-      console.log(action);
       return {
         ...state,
         users: state.users.map((user, i) =>

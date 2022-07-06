@@ -1,37 +1,42 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Button, TableCell, TableRow } from '@mui/material';
+import React, { useContext } from 'react';
+import { useDispatch } from 'react-redux';
 import { removeUser } from '../asyncActions/users';
-import { editableUserAction, editReducerOnAction } from './store/actions';
+import { InputContext } from '../Context/Context';
 
 const UserRow = ({ person, index }) => {
   const dispatch = useDispatch();
-  const isEdit = useSelector((state) => state.isEdit.isEdit);
+  const { setUser, isEdit, setIsEdit } = useContext(InputContext);
 
   const editableUser = (id, user, index) => {
-    console.log(id, user, index);
-    dispatch(editableUserAction(id, user, index));
-    dispatch(editReducerOnAction());
+    setUser({
+      id: id,
+      index: index,
+      name: user.name,
+      lastName: user.lastName,
+      phone: user.phone,
+      email: user.email,
+    });
+    setIsEdit(true);
   };
 
   return (
-    <tr key={person._id}>
-      <td>{index + 1}</td>
-      <td>{person._id}</td>
-      <td>{person.data.name}</td>
-      <td>{person.data.lastName}</td>
-      <td>{person.data.phone}</td>
-      <td>{person.data.email}</td>
-      <td>
-        <div>
-          <button disabled={isEdit} onClick={() => editableUser(person._id, person.data, index)}>
-            Edit
-          </button>
-          <button disabled={isEdit} onClick={() => dispatch(removeUser(person._id, index))}>
-            Remove
-          </button>
-        </div>
-      </td>
-    </tr>
+    <TableRow key={person._id}>
+      <TableCell>{index + 1}</TableCell>
+      <TableCell>{person._id}</TableCell>
+      {person.data.name ? <TableCell>{person.data.name}</TableCell> : <TableCell sx={{ color: 'lightslategray' }}>NO DATA</TableCell>}
+      {person.data.lastName ? <TableCell>{person.data.lastName}</TableCell> : <TableCell sx={{ color: 'lightslategray' }}>NO DATA</TableCell>}
+      {person.data.phone ? <TableCell>{person.data.phone}</TableCell> : <TableCell sx={{ color: 'lightslategray' }}>NO DATA</TableCell>}
+      {person.data.email ? <TableCell>{person.data.email}</TableCell> : <TableCell sx={{ color: 'lightslategray' }}>NO DATA</TableCell>}
+      <TableCell>
+        <Button sx={{ margin: '0 10px', width: '90px' }} variant="contained" color="success" disabled={isEdit} onClick={() => editableUser(person._id, person.data, index)}>
+          Edit
+        </Button>
+        <Button sx={{ margin: '0 10px', width: '90px' }} variant="contained" color="error" disabled={isEdit} onClick={() => dispatch(removeUser(person._id, index))}>
+          Remove
+        </Button>
+      </TableCell>
+    </TableRow>
   );
 };
 

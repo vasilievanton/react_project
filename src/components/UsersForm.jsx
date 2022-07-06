@@ -1,55 +1,52 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { editReducerOffAction, inputChangeAction, inputClearAction } from '../components/store/actions';
+import React, { useContext, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { fetchUsers, postUser, putUser } from '../asyncActions/users';
+import { InputContext } from '../Context/Context';
+import { initialInputValue } from '../App';
+import { Box, Button, TextField } from '@mui/material';
 
 const UsersForm = () => {
   const dispatch = useDispatch();
-  const isEdit = useSelector((state) => state.isEdit.isEdit);
-  const userInputValue = useSelector((state) => state.input);
-  const editedUserData = {
-    name: userInputValue.name,
-    lastName: userInputValue.lastName,
-    phone: userInputValue.phone,
-    email: userInputValue.email,
-  };
+  const { isEdit, setIsEdit } = useContext(InputContext);
 
   useEffect(() => {
     dispatch(fetchUsers());
-  }, []);
+  }, [dispatch]);
+
+  const { user, setUser } = useContext(InputContext);
 
   const editInput = (e, type) => {
-    dispatch(inputChangeAction(e.target.value, type));
+    setUser({ ...user, [type]: e.target.value });
   };
 
   const addUser = (e) => {
     e.preventDefault();
+    const userData = { name: user.name, lastName: user.lastName, phone: user.phone, email: user.email };
     if (isEdit) {
-      dispatch(postUser(userInputValue.id, editedUserData, userInputValue.index));
-      dispatch(editReducerOffAction());
+      dispatch(postUser(user.id, userData, user.index));
+      setIsEdit(false);
     } else {
-      dispatch(putUser(userInputValue));
+      dispatch(putUser(userData));
     }
-    dispatch(inputClearAction());
+    setUser(initialInputValue);
   };
 
   return (
-    <form>
-      <div>
-        <input placeholder="Name" value={userInputValue.name} onChange={(e) => editInput(e, 'name')} />
-        <input placeholder="last Name" value={userInputValue.lastName} onChange={(e) => editInput(e, 'lastName')} />
-        <input placeholder="phone" value={userInputValue.phone} onChange={(e) => editInput(e, 'phone')} />
-        <input placeholder="email" value={userInputValue.email} onChange={(e) => editInput(e, 'email')} />
-      </div>
-      <div className="form__btns">
-        <button type="button" onClick={() => dispatch(inputClearAction())}>
+    <Box sx={{ margin: '20px auto' }}>
+      <Box sx={{ display: 'flex' }}>
+        <TextField fullWidth size="small" label="Name" value={user.name} onChange={(e) => editInput(e, 'name')} />
+        <TextField fullWidth size="small" label="Last Name" value={user.lastName} onChange={(e) => editInput(e, 'lastName')} />
+        <TextField fullWidth size="small" label="Phone" value={user.phone} onChange={(e) => editInput(e, 'phone')} />
+        <TextField fullWidth size="small" label="E-mail" value={user.email} onChange={(e) => editInput(e, 'email')} />
+        <Button variant="outlined" onClick={() => setUser(initialInputValue)}>
           Clear
-        </button>
-        <button type="submit" onClick={(e) => addUser(e)}>
+        </Button>
+        <Button variant="contained" onClick={(e) => addUser(e)}>
           {isEdit ? 'Edit' : 'Add'}
-        </button>
-      </div>
-    </form>
+        </Button>
+      </Box>
+      <Box sx={{ display: 'flex' }}></Box>
+    </Box>
   );
 };
 

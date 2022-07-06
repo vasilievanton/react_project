@@ -1,4 +1,4 @@
-import { EDIT_INPUT_VALUE, CLEAR_INPUT_VALUES, EDITABLE_USER, EDIT_USER_OFF, EDIT_USER_ON, LOAD_USERS, ADD_USER, REMOVE_USER, EDIT_USER } from './types';
+import { LOAD_USERS, ADD_USER, REMOVE_USER, EDIT_USER, LOADING_ON, LOADING_OFF } from './types';
 
 export const addManyUserAction = (users) => ({
   type: LOAD_USERS,
@@ -19,24 +19,9 @@ export const editUserAction = (id, user, userIndex) => ({
   userIndex,
 });
 
-export const inputChangeAction = (value, valueType) => ({
-  type: EDIT_INPUT_VALUE,
-  value,
-  valueType,
+export const setIsLoadingOn = () => ({
+  type: LOADING_ON,
 });
-export const inputClearAction = () => ({
-  type: CLEAR_INPUT_VALUES,
-});
-export const editableUserAction = (id, user, userIndex) => ({
-  type: EDITABLE_USER,
-  id: id,
-  data: user,
-  userIndex: userIndex,
-});
-
-export const editReducerOnAction = () => ({
-  type: EDIT_USER_ON,
-});
-export const editReducerOffAction = () => ({
-  type: EDIT_USER_OFF,
+export const setIsLoadingOff = () => ({
+  type: LOADING_OFF,
 });

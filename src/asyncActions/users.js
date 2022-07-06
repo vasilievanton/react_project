@@ -1,25 +1,12 @@
-import { addManyUserAction, addUserAction, editUserAction, removeUserAction } from '../components/store/actions';
+import { addManyUserAction, addUserAction, editUserAction, removeUserAction, setIsLoadingOff, setIsLoadingOn } from '../components/store/actions';
 
 export const fetchUsers = () => {
   return async function (dispatch) {
+    await dispatch(setIsLoadingOn());
     const response = await fetch('http://178.128.196.163:3000/api/records');
     const json = await response.json();
     await dispatch(addManyUserAction(json));
-  };
-};
-
-export const putUser2 = (user) => {
-  return async function (dispatch) {
-    await fetch('http://178.128.196.163:3000/api/records', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ data: user }),
-    });
-    const response = await fetch('http://178.128.196.163:3000/api/records');
-    const json = await response.json();
-    await dispatch(addManyUserAction(json));
+    await dispatch(setIsLoadingOff());
   };
 };
 
@@ -51,7 +38,6 @@ export const removeUser = (id, userIndex) => {
 
 export const postUser = (id, user, userIndex) => {
   return async function (dispatch) {
-    await console.log(id, user, userIndex);
     await fetch(`http://178.128.196.163:3000/api/records/${id}`, {
       method: 'POST',
       headers: {
