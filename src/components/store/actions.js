@@ -1,4 +1,4 @@
-import { LOAD_USERS, ADD_USER, REMOVE_USER, EDIT_USER, LOADING_ON, LOADING_OFF, SET_QUERY, FILTER_USER } from './types';
+import { LOAD_USERS, ADD_USER, REMOVE_USER, EDIT_USER, LOADING_ON, LOADING_OFF, SET_QUERY } from './types';
 
 export const addManyUserAction = (users) => ({
   type: LOAD_USERS,
@@ -17,10 +17,6 @@ export const editUserAction = (id, user, userIndex) => ({
   id,
   user,
   userIndex,
-});
-export const filterUserAction = (query) => ({
-  type: FILTER_USER,
-  query
 });
 
 

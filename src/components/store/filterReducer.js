@@ -1,6 +1,6 @@
 import { SET_QUERY } from './types';
 
-const defaultState = { query: 'a' };
+const defaultState = { query: '' };
 
 export const filterReducer = (state = defaultState, action) => {
   switch (action.type) {

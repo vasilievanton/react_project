@@ -1,10 +1,23 @@
 import { Button, TableCell, TableRow } from '@mui/material';
 import React, { useContext } from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { removeUser } from '../asyncActions/users';
 import { InputContext } from '../Context/Context';
+import { formatNumber } from '../helpers/formatNumber';
 
 const UserRow = ({ person, index }) => {
+  const [formattedPhoneNumber, SetFormattedPhoneNumber] = useState('');
+  useEffect(() => {
+    if (person.data.phone) {
+      SetFormattedPhoneNumber(formatNumber(person.data.phone));
+    } else {
+      SetFormattedPhoneNumber(person.data.phone);
+    }
+  }, [person]);
+
+  console.log(formattedPhoneNumber);
   const dispatch = useDispatch();
   const { setUser, isEdit, setIsEdit } = useContext(InputContext);
 
@@ -23,10 +36,10 @@ const UserRow = ({ person, index }) => {
   return (
     <TableRow key={person._id}>
       <TableCell>{index + 1}</TableCell>
-      <TableCell>{person._id}</TableCell>
+      {/* <TableCell>{person._id}</TableCell> */}
       {person.data.name ? <TableCell>{person.data.name}</TableCell> : <TableCell sx={{ color: 'lightslategray' }}>NO DATA</TableCell>}
       {person.data.lastName ? <TableCell>{person.data.lastName}</TableCell> : <TableCell sx={{ color: 'lightslategray' }}>NO DATA</TableCell>}
-      {person.data.phone ? <TableCell>{person.data.phone}</TableCell> : <TableCell sx={{ color: 'lightslategray' }}>NO DATA</TableCell>}
+      {person.data.phone ? <TableCell>{formattedPhoneNumber}</TableCell> : <TableCell sx={{ color: 'lightslategray' }}>NO DATA</TableCell>}
       {person.data.email ? <TableCell>{person.data.email}</TableCell> : <TableCell sx={{ color: 'lightslategray' }}>NO DATA</TableCell>}
       <TableCell>
         <Button sx={{ margin: '0 10px', width: '90px' }} variant="contained" color="success" disabled={isEdit} onClick={() => editableUser(person._id, person.data, index)}>
