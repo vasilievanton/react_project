@@ -16,8 +16,8 @@ const UserRow = ({ person, index }) => {
       SetFormattedPhoneNumber(person.data.phone);
     }
   }, [person]);
-
   console.log(formattedPhoneNumber);
+
   const dispatch = useDispatch();
   const { setUser, isEdit, setIsEdit } = useContext(InputContext);
 

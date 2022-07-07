@@ -1,12 +1,12 @@
 export const formatNumber = (number) => {
-    console.log(number, number.length);
     const numberArr = number
       .replace(/\s+/g, '')
       .replace(/-/g, '')
       .replace(/\)/g, '')
       .replace(/\(/g, '')
       .split('');
-    if ((number.length === 11 || number.length === 12)) {
+      console.log(number, numberArr);
+    if ((numberArr.length === 11 || numberArr.length === 12)) {
         let countryCodeNumber;
         const operatorNumber = numberArr.slice(-10, -7).join('');
         const phoneNumber = [

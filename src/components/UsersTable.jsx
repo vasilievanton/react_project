@@ -19,6 +19,7 @@ const UsersTable = ({ editUser }) => {
   const users = useSelector((state) => state.users.users);
   const isLoading = useSelector((state) => state.isLoading.isLoading);
   const query = useSelector((state) => state.filter.query);
+  console.log(users);
   return (
     <>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -34,14 +35,7 @@ const UsersTable = ({ editUser }) => {
         {!isLoading ? (
           <TableBody>
             {users
-              .filter((user) => 
-              user.data.name.toLowerCase().includes(query.toLowerCase()) 
-              || 
-              user.data.lastName.toLowerCase().includes(query.toLowerCase()) 
-              ||
-              user.data.phone.toLowerCase().includes(query.toLowerCase()) 
-              || 
-              user.data.email.toLowerCase().includes(query.toLowerCase()))
+              .filter((user) => user.data.name.toLowerCase().includes(query.toLowerCase()) || user.data.lastName.toLowerCase().includes(query.toLowerCase()) || user.data.phone.toLowerCase().includes(query.toLowerCase()) || user.data.email.toLowerCase().includes(query.toLowerCase()))
               .map((person, index) => (
                 <UserRow editUser={editUser} person={person} index={index} key={person._id} />
               ))}
